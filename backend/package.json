@@ -2,15 +2,15 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Angular chat app backend",
-  "main": "main.js",
+  "main": "./src/index.js",
+  "module": "./src/server.js",
   "scripts": {
-    "start": "node main.js",
-    "start-dev": "nodemon main.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "Alexander Kilroy",
   "license": "ISC",
   "dependencies": {
-    "@hapi/joi": "^16.1.4",
     "@types/mongoose": "^5.5.17",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",

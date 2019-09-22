@@ -1,9 +1,19 @@
-//import Joi from '@hapi/joi';
 import express from 'express';
 import User from '../models/user';
-//import { signUp } from '../validations/user';
 
 const userRouter = express.Router();
+
+/**
+ * Turn this into middleware at somepoint!
+ * Getting lazy Alex... :D
+ * Also probably extend this to add socket.io info for us
+ */
+function userSession(user) {
+    return {
+        userId: user._id,
+        username: user.username
+    }
+}
 
 /**
  * Write validation middleware, check for:
@@ -11,18 +21,20 @@ const userRouter = express.Router();
  * username, x amount of characters.
  * password, Capital, numbers characters etc.
  */
-userRouter.post("/", async (req, res) => {
+userRouter.post("/", (req, res) => {
     try {
         const { username, email, password } = req.body
 
         const newUser = new User({ username, email, password });
-        await newUser.save();
+        const sessionUser = userSession(newUser);
+        newUser.save();
 
-        res.send({ userId: newUser.id, username: username });
+        req.session.user = sessionUser;
+        res.send(sessionUser);
+
     } catch (err) {
         res.status(400).send(err);
     }
-
 });
 
 /**

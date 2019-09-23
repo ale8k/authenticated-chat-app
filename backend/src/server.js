@@ -1,6 +1,6 @@
 import express from "express";
 import { PORT, NODE_ENV, MONGY_URI, SESS_LIFETIME, SESS_NAME, SESS_SECRET } from '../config';
-import { userRoutes } from './routes/index';
+import { userRoutes, sessionRoutes } from './routes/index';
 import * as http from "http";
 import io from "socket.io";
 import mongoose from 'mongoose';
@@ -56,10 +56,12 @@ app.use(session({
 // after the session, otherwise it's never picked up. Jesus christ I spent a good 30 minutes
 // fannying around!!
 app.use('/api', apiRouter);
-
+// Create user
 apiRouter.use('/users', userRoutes);
+// Begin/End/Confirm a session routes
+apiRouter.use('/session', sessionRoutes);
 
-// SocketIO connection
+// #SOCKETIO
 socketIO.on("connection", (socket) => {
     console.log('user connected');
 

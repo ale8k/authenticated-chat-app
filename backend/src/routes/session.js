@@ -33,7 +33,7 @@ sessionRouter.post("", async (req, res) => {
       throw new Error('Invalid login details...');
     }
   } catch (err) {
-    res.statusStatus(401);
+    res.sendStatus(401);
   }
 });
 

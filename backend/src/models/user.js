@@ -7,14 +7,16 @@ const UserSchema = new mongoose.Schema({
         validate: {
             validator: username => User.doesNotExist({ username }),
             message: "Username already exists"
-        }
+        },
+        required: true
     },
     email: {
         type: String,
         validate: {
             validator: email => User.doesNotExist({ email }),
             message: "Email already exists"
-        }
+        },
+        required: true
     },
     password: {
         type: String,
@@ -24,12 +26,6 @@ const UserSchema = new mongoose.Schema({
 { 
     timestamps: true 
 });
-
-/**
- * Let's take these methods out of here
- * and perhaps have them in another folder... 
- * Needs abit of work.
- */
 
 // PRE middle ware hook
 // If the password is saved & modified, hash and salt it again.

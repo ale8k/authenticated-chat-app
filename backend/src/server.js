@@ -16,19 +16,14 @@ const apiRouter = express.Router();
 const MongyStore = connectStore(session);
 
 app.disable("x-powered-by");
-
 app.use(cors({
     origin: [
         "http://localhost:4200"
     ], 
     credentials: true
 }));
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-// #CORS MIDDLEWARE
-// TO BE ADDED.
 
 // #MONGY CONNECTION
 mongoose.connect(MONGY_URI, {
@@ -46,12 +41,6 @@ app.use(session({
     store: new MongyStore({
         mongooseConnection: mongoose.connection,
         collection: 'session',
-        // Time to live, connect-mongo uses seconds not milliseconds,
-        // so we divide by 1k :). We parseint as env variables can often
-        // be set to strings...
-        // This is is the TTL collection feature,
-        // after mongod 2.2+ TTL feature recognises expired session, it will remove it. GOOD SHIT!
-        // Also remember must run the DB in admin, else won't work.
         ttl: parseInt(SESS_LIFETIME) / 1000
     }),
     cookie: {
@@ -63,14 +52,8 @@ app.use(session({
 
 
 // #ROUTES
-
-// This little mother fucker needs to be placed in the middleware cycle
-// after the session, otherwise it's never picked up. Jesus christ I spent a good 30 minutes
-// fannying around!!
 app.use('/api', apiRouter);
-// Create user
 apiRouter.use('/users', userRoutes);
-// Begin/End/Confirm a session routes
 apiRouter.use('/session', sessionRoutes);
 
 // #SOCKETIO
@@ -86,6 +69,5 @@ socketIO.on("connection", (socket) => {
     })
 
 });
-
 
 server.listen(PORT, () => console.log(`started on port: ${PORT}`));

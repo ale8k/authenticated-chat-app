@@ -6,6 +6,7 @@ import io from "socket.io";
 import mongoose from 'mongoose';
 import session from "express-session";
 import connectStore from "connect-mongo";
+import cors from "cors";
 
 // #CONSTANT VARIABLES
 const app = express();
@@ -15,8 +16,16 @@ const apiRouter = express.Router();
 const MongyStore = connectStore(session);
 
 app.disable("x-powered-by");
+
+app.use(cors({origin: [
+    "http://localhost:4200"
+  ], credentials: true}));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// #CORS MIDDLEWARE
+// TO BE ADDED.
 
 // #MONGY CONNECTION
 mongoose.connect(MONGY_URI, {
@@ -43,7 +52,7 @@ app.use(session({
         ttl: parseInt(SESS_LIFETIME) / 1000
     }),
     cookie: {
-        sameSite: true,
+        //sameSite: true,
         secure: NODE_ENV === 'production',
         maxAge: parseInt(SESS_LIFETIME)
     }

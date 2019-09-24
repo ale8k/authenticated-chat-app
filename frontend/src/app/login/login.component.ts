@@ -1,15 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { SessionService } from "../shared/services/session.service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private sessionService: SessionService
+  ) { }
 
   ngOnInit() {
+  }
+
+  public attemptUserLogin({email, password}): void {
+    this.sessionService.login(email, password);
+  }
+
+  public attemptUserLogout(): void {
+    this.sessionService.logout();
   }
 
 }

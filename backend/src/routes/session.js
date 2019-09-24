@@ -18,27 +18,30 @@ function userSession(user) {
 
 // #LOGIN
 sessionRouter.post("", async (req, res) => {
+  console.log(req.session.user);
   try {
-
+    console.log("User attempting to login...");
     const { email, password } = req.body
+    console.log(req.body)
     const user = await User.findOne({ email });
 
     if (user && user.comparePasswords(password)) {
       const sessionUser = userSession(user);
       req.session.user = sessionUser;
-      res.send(sessionUser);
+      //console.log(JSON.stringify(req.headers));
+      res.send(req.session);
     } else {
-      throw new Error('Invalid login credentials');
+      throw new Error('Invalid login details...');
     }
   } catch (err) {
-    res.status(401).send(err);
+    res.statusStatus(401);
   }
 });
 
 // #LOGOUT
 sessionRouter.delete("", (req, res) => {
   try {
-    const user = session.user;
+    const user = req.session.user;
     if (user) {
       req.session.destroy(err => {
         if (err) throw (err);

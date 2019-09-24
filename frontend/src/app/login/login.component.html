@@ -1,12 +1,25 @@
 <div>
-    <form>
-        <label for="Username">Username</label>
-        <input type="text" placeholder="Username" id="Username">
-        <hr>
-        <label for="Username">Password</label>
-        <input type="password" placeholder="Password" id="Password">
-        <hr>
-        <label for="exampleEmailInput">&nbsp;</label>
-        <input type="submit" value="Login">
+    <!-- #TODO: Remove ngNativeValidate and perform custom validation 
+         with form.valid on subit / disabled submit button -->
+    <form #form="ngForm" (ngSubmit)="attemptUserLogin(form.value)" ngNativeValidate>
+        <label for="email">Enter your email to login:</label>
+        <input  type="email" 
+                placeholder="Email" 
+                id="email"
+                name="email"
+                required
+                ngModel>
+
+        <label for="Password">Password</label>
+        <input  type="password" 
+                placeholder="Password" 
+                id="Password"
+                name="password"
+                required
+                ngModel>
+
+        <button [disabled]="false" type="submit">Login</button>
     </form>
+
+    <button (click)="attemptUserLogout()">logout</button>
 </div>

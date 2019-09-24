@@ -28,8 +28,7 @@ sessionRouter.post("", async (req, res) => {
     if (user && user.comparePasswords(password)) {
       const sessionUser = userSession(user);
       req.session.user = sessionUser;
-      //console.log(JSON.stringify(req.headers));
-      res.send(req.session);
+      res.send(sessionUser);
     } else {
       throw new Error('Invalid login details...');
     }

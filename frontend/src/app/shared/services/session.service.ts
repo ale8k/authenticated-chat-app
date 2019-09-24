@@ -22,8 +22,10 @@ export class SessionService {
     },
     {
       responseType: "text",
-      withCredentials: true // FUCK U WITH CREDENTIALS
-    }).subscribe();
+      withCredentials: true
+    }).subscribe(user => {
+      console.log(user);
+    });
 
   }
 

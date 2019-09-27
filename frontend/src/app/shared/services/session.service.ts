@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
+import { map, tap } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root"
@@ -28,14 +29,19 @@ export class SessionService {
       responseType: "text",
       withCredentials: true
     }).subscribe(
+      /**
+       * I would like a class for this ideally or top level prototype
+       */
       userNameAndId => {
         $response.next({
-          user: userNameAndId
+          user: userNameAndId,
+          error: null
         });
         this.ISLOGGEDIN = true;
       },
       err => {
         $response.next({
+          user: null,
           error: err
         });
         this.ISLOGGEDIN = false;
@@ -55,11 +61,14 @@ export class SessionService {
   }
 
   // #CONFIRM LOGGEDIN
-  public loginConfirmation(): void {
-    this.http.get(this.sessionUrl, {
-      responseType: "text",
+  // Needs typing.
+  public loggedInConfirmation(): Observable<{ userId: string, username: string} | null | boolean> {
+    return this.http.get<{userId: string, username: string} | null>(this.sessionUrl, {
+      responseType: "json",
       withCredentials: true
-    }).subscribe(d => console.log(d));
+    }).pipe(
+      tap(console.log)
+    );
   }
 
 }

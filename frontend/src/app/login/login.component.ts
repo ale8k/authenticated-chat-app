@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { SessionService } from "../shared/services/session.service";
 import { Router } from "@angular/router";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "app-login",
@@ -18,8 +19,10 @@ export class LoginComponent implements OnInit {
   }
 
   public attemptUserLogin({email, password}): void {
-    this.sessionService.login(email, password).subscribe((response) => {
-
+    this.sessionService.login(email, password).subscribe((response: { user: any | null, error: HttpErrorResponse | null }) => {
+      if (response.error == null) {
+        this.route.navigate(["home"]);
+      }
     });
 
   }
@@ -29,8 +32,7 @@ export class LoginComponent implements OnInit {
   }
 
   public confirmUserIsLoggedIn() {
-    this.sessionService.loginConfirmation();
-    this.route.navigate(["home"]);
+    this.sessionService.loggedInConfirmation().subscribe();
   }
 
 }

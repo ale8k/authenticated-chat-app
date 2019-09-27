@@ -1,7 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ApiService } from "./shared/services/api.service";
 import { Router } from "@angular/router";
-import { SessionService } from "./shared/services/session.service";
 
 @Component({
   selector: "app-root",
@@ -10,14 +8,10 @@ import { SessionService } from "./shared/services/session.service";
 })
 export class AppComponent implements OnInit {
 
-  constructor(
-    private route: Router,
-  ) { }
+  constructor(private route: Router) { }
 
   public ngOnInit(): void {
-    // Has session?
-    // Home route
-    // else
-    this.route.navigateByUrl("login");
+    this.route.navigate(["home"]);
   }
+
 }

@@ -1,25 +1,35 @@
-// import { Injectable } from "@angular/core";
-// import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
-// import { SessionService } from "../services/session.service";
+import { Injectable } from "@angular/core";
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+import { SessionService } from "../services/session.service";
+import { map, catchError } from "rxjs/operators";
+import { Observable, of } from "rxjs";
 
+@Injectable({ providedIn: "root" })
+export class AuthGuard implements CanActivate {
 
+    constructor(
+        private route: Router,
+        private sessionService: SessionService
+    ) { }
 
-// @Injectable({ providedIn: "root" })
-// export class AuthGuard implements CanActivate {
-//     constructor(
-//         private router: Router,
-//         private sessionService: SessionService
-//     ) {}
-
-//     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-//         // const currentUser = this.sessionService.currentUserValue;
-//         // if (currentUser) {
-//             // authorised so return true
-//             // return true;
-//         // }
-
-//         // not logged in so redirect to login page with the return url
-//         this.router.navigate(["/login"], { queryParams: { returnUrl: state.url }});
-//         return false;
-//     }
-// }
+    public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+        return this.sessionService.loggedInConfirmation().pipe(
+            map(user => {
+                if (user) {
+                    console.log("User session exists");
+                    console.log(user);
+                    return true;
+                } else {
+                    console.log("User session does not exist");
+                    console.log(user);
+                    this.route.navigate(["login"]);
+                    return false;
+                }
+            }),
+            catchError(err => {
+                this.route.navigate(["login"]);
+                return of(false);
+            })
+        );
+    }
+}

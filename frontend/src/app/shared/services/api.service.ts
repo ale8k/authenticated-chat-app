@@ -7,6 +7,4 @@ export class ApiService {
 
   constructor() { }
 
-  test() { console.log("test"); }
-
 }

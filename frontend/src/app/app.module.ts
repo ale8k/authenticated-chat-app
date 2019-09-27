@@ -5,6 +5,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { UnauthorisedComponent } from "./unauthorised/unauthorised.component";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { UnauthorisedComponent } from "./unauthorised/unauthorised.component";
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

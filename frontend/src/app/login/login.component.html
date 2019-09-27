@@ -13,11 +13,12 @@
         <label for="Password">Password</label>
         <input  type="password" 
                 placeholder="Password" 
-                id="Password"
+                id="password"
                 name="password"
                 required
                 ngModel>
 
         <button [disabled]="false" type="submit">Login</button>
     </form>
+    <button mat-button (click)="navigateToCreateAccount()">Create account</button>
 </div>

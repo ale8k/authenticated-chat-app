@@ -12,15 +12,23 @@ export class SessionService {
   public ISLOGGEDIN?: boolean = false;
 
   private readonly sessionUrl: string = "http://127.0.0.1:5000/api/session";
+  private readonly userUrl: string = "http://127.0.0.1:5000/api/users";
 
   constructor(
     private http: HttpClient,
     private route: Router
   ) { }
 
-  // #LOGIN
-  public login(attemptedEmail, attemptedPassword) {
+  // #CREATE USER
+  public createNewUser(user) {
+    return this.http.post(this.userUrl, user,
+    {
+      responseType: "json"
+    });
+  }
 
+  // #LOGIN
+  public login(attemptedEmail, attemptedPassword): void {
     this.http.post(this.sessionUrl, {
       email: attemptedEmail,
       password: attemptedPassword
@@ -35,7 +43,6 @@ export class SessionService {
     err => {
       console.log(err);
     });
-
   }
 
   // #LOGOUT

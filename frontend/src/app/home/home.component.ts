@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log("Home component initialised");
   }
 
   public logout(): void {

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
-import { map, tap } from "rxjs/operators";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root"
@@ -14,41 +14,27 @@ export class SessionService {
   private readonly sessionUrl: string = "http://127.0.0.1:5000/api/session";
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private route: Router
   ) { }
 
   // #LOGIN
   public login(attemptedEmail, attemptedPassword) {
-    const $response = new Subject<{user} | {error: HttpErrorResponse}>();
 
     this.http.post(this.sessionUrl, {
       email: attemptedEmail,
       password: attemptedPassword
     },
     {
-      responseType: "text",
+      responseType: "json",
       withCredentials: true
-    }).subscribe(
-      /**
-       * I would like a class for this ideally or top level prototype
-       */
-      userNameAndId => {
-        $response.next({
-          user: userNameAndId,
-          error: null
-        });
-        this.ISLOGGEDIN = true;
-      },
-      err => {
-        $response.next({
-          user: null,
-          error: err
-        });
-        this.ISLOGGEDIN = false;
-      }
-    );
-
-    return $response;
+    }).subscribe(user => {
+      console.log(user);
+      this.route.navigate(["home"]);
+    },
+    err => {
+      console.log(err);
+    });
 
   }
 
@@ -66,9 +52,7 @@ export class SessionService {
     return this.http.get<{userId: string, username: string} | null>(this.sessionUrl, {
       responseType: "json",
       withCredentials: true
-    }).pipe(
-      tap(console.log)
-    );
+    });
   }
 
 }

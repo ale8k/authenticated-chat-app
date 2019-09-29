@@ -6,12 +6,16 @@ import io from "socket.io-client";
 })
 export class SocketService {
 
-  constructor() { }
-
   private socket: SocketIOClient.Socket;
 
+  constructor() { }
+
+  public get usersSocket(): SocketIOClient.Socket {
+    return this.socket;
+  }
+
   public connect(): void {
-    this.socket = io("http://localhost:3000");
+    this.socket = io("http://localhost:5000");
   }
 
   public disconnect(): void {

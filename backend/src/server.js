@@ -19,7 +19,7 @@ app.disable("x-powered-by");
 app.use(cors({
     origin: [
         "http://localhost:4200"
-    ], 
+    ],
     credentials: true
 }));
 app.use(express.urlencoded({ extended: true }));
@@ -59,6 +59,18 @@ apiRouter.use('/session', sessionRoutes);
 // #SOCKETIO
 socketIO.on("connection", (socket) => {
     console.log('user connected');
+    // Force our client to perform a session confirmation
+    socket.emit("auth req");
+
+    // Respond to a successful auth req
+    socket.on("successful authentication", () => {
+
+    });
+
+    // Respond to a unsuccessful auth req
+    socket.on("unsuccessful authentication", () => {
+
+    });
 
     socket.on("disconnect", () => {
         console.log("user disconnected");

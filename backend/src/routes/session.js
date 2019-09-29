@@ -18,7 +18,6 @@ function userSession(user) {
 
 // #LOGIN
 sessionRouter.post("", async (req, res) => {
-  console.log(req.session.user);
   try {
     console.log("User attempting to login...");
     const { email, password } = req.body

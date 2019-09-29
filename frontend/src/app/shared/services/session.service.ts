@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { Observable, Subject } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
 import { Router } from "@angular/router";
 
 @Injectable({
@@ -8,24 +8,12 @@ import { Router } from "@angular/router";
 })
 export class SessionService {
 
-  // To protect routes!
-  public ISLOGGEDIN?: boolean = false;
-
   private readonly sessionUrl: string = "http://127.0.0.1:5000/api/session";
-  private readonly userUrl: string = "http://127.0.0.1:5000/api/users";
 
   constructor(
     private http: HttpClient,
     private route: Router
   ) { }
-
-  // #CREATE USER
-  public createNewUser(user) {
-    return this.http.post(this.userUrl, user,
-    {
-      responseType: "json"
-    });
-  }
 
   // #LOGIN
   public login(attemptedEmail, attemptedPassword): void {
@@ -50,7 +38,7 @@ export class SessionService {
     this.http.delete(this.sessionUrl, {
       responseType: "text",
       withCredentials: true
-    }).subscribe(userNameAndId => this.ISLOGGEDIN = false);
+    }).subscribe();
   }
 
   // #CONFIRM LOGGEDIN

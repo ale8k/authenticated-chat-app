@@ -38,6 +38,50 @@ userRouter.post("/", (req, res) => {
 });
 
 /**
+ * The following two end points are identical,
+ * turn them into one that takes the data query in the 
+ * req url as a param 
+ */
+
+
+/**
+ * Check if single users email exists
+ */
+userRouter.post("/user-email", (req, res) => {
+    console.log(req.headers);
+    User.findOne({ email: req.body.email }, (err, user) => {
+        if (user) {
+            res.send({
+                exists: true
+            });
+        } else {
+            res.send({
+                exists: false
+            });
+        }
+    });
+});
+
+/**
+ * Check if single users username exists
+ */
+userRouter.post("/user-username", (req, res) => {
+    console.log(req.headers);
+    User.findOne({ username: req.body.username }, (err, user) => {
+        if (user) {
+            res.send({
+                exists: true
+            });
+        } else {
+            res.send({
+                exists: false
+            });
+        }
+    });
+});
+
+
+/**
  * #DEBUG
  */
 userRouter.get("/", (req, res) => {

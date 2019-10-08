@@ -1,1 +1,6 @@
 <p>chatroom works!</p>
+<div>
+    <div *ngFor="let message of currentMessageList">{{ message }}</div>
+</div>
+<input #textInput type="text">
+<button (click)="sendUserMessage()">Send message</button>

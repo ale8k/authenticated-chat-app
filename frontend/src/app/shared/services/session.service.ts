@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 })
 export class SessionService {
 
+  public currentUser;
   private readonly sessionUrl: string = "http://127.0.0.1:5000/api/session";
 
   constructor(
@@ -26,6 +27,7 @@ export class SessionService {
       withCredentials: true
     }).subscribe(user => {
       console.log(user);
+      this.currentUser = user;
       this.route.navigate(["home"], { replaceUrl: true });
     },
     err => {

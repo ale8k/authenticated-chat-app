@@ -58,34 +58,28 @@ apiRouter.use('/session', sessionRoutes);
 
 // #SOCKETIO
 
+// need to figure a way to project this socket somehow
 socketIO.use((socket, next) => {
-
     next();
 });
 
 socketIO.on("connection", (socket) => {
-    // Force our client to perform a session confirmation
-    socket.emit("auth req");
 
-    // Respond to a successful auth req
-    socket.on("successful authentication", (user) => {
-        console.log(user.username + " has successfully logged in");
-    });
-
-    // Respond to a unsuccessful auth req
-    socket.on("unsuccessful authentication", () => {
-        // Add more to this,
-        // what should we do other than disconnect on bad auth?
-        // Maybe emit something, idk.
-        socket.disconnect();
-    });
+    // DEBUG, lets us just check our packet data, save us console logging everywhere
+    socket.use((packet, next) => {
+        console.log(packet);
+        next();
+    })
 
     socket.on("disconnect", () => {
         console.log("user disconnected");
     });
 
-    socket.on("chat message", (message) => {
-        console.log(message);
+    socket.on("chat message", (userAndMessage) => {
+        // Send message back to initial sender
+        socket.emit("new message", userAndMessage);
+        // Send message to all currently connected
+        socket.broadcast.emit("new message", userAndMessage);
     })
 
 });

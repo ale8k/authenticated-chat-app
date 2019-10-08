@@ -56,6 +56,8 @@ sessionRouter.delete("", (req, res) => {
 
 // #LOGGEDIN
 sessionRouter.get("", (req, res) => {
+  console.log(req.session.user);
+  console.log("Is already logged in")
   res.send(req.session.user);
 });
 

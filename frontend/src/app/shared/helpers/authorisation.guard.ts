@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate {
                 if (user) {
                     console.log("User session exists");
                     console.log(user);
+                    this.sessionService.currentUser = user;
                     return true;
                 } else {
                     console.log("User session does not exist");

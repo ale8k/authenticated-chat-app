@@ -22,8 +22,8 @@ export class SocketService {
     this.socket.disconnect();
   }
 
-  public sendMessage(): void {
-    this.socket.emit("chat message", "harded coded value bitch");
+  public sendMessage(userAndMessage): void {
+    this.socket.emit("chat message", userAndMessage);
   }
 
 }

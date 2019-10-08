@@ -81,6 +81,7 @@ socketIO.on("connection", (socket) => {
         socket.broadcast.emit("logged in", user.username)
     })
 
+    // Need to add disconnect log out message... (pull it from the packet and store in request object)
     socket.on("disconnect", () => {
         console.log("user disconnected");
     });

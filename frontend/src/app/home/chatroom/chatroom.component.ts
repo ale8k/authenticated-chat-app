@@ -24,6 +24,10 @@ export class ChatroomComponent implements OnInit {
     this.socketService.usersSocket.on("new message", ({ user, message }) => {
       this.currentMessageList.push(user + ": " + message);
     });
+
+    this.socketService.usersSocket.on("logged out", (username) => {
+      this.currentMessageList.push(username + " has logged out");
+    })
   }
 
   public sendUserMessage(): void {

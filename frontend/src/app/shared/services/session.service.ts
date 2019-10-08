@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
+import { SocketService } from "./socket.service";
 
 @Injectable({
   providedIn: "root"
@@ -13,7 +14,8 @@ export class SessionService {
 
   constructor(
     private http: HttpClient,
-    private route: Router
+    private route: Router,
+    private socketService: SocketService
   ) { }
 
   // #LOGIN
@@ -37,6 +39,8 @@ export class SessionService {
 
   // #LOGOUT
   public logout(): void {
+    this.socketService.usersSocket.emit("user logged out", this.currentUser);
+    this.socketService.disconnect();
     this.http.delete(this.sessionUrl, {
       responseType: "text",
       withCredentials: true

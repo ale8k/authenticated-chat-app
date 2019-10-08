@@ -71,6 +71,11 @@ socketIO.on("connection", (socket) => {
         next();
     })
 
+    socket.on("user logged out", (user) => {
+        console.log(user);
+        socket.broadcast.emit("logged out", user.username)
+    })
+
     socket.on("disconnect", () => {
         console.log("user disconnected");
     });

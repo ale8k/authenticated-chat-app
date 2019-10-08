@@ -57,19 +57,27 @@ apiRouter.use('/users', userRoutes);
 apiRouter.use('/session', sessionRoutes);
 
 // #SOCKETIO
+
+socketIO.use((socket, next) => {
+
+    next();
+});
+
 socketIO.on("connection", (socket) => {
-    console.log('user connected');
     // Force our client to perform a session confirmation
     socket.emit("auth req");
 
     // Respond to a successful auth req
-    socket.on("successful authentication", () => {
-
+    socket.on("successful authentication", (user) => {
+        console.log(user.username + " has successfully logged in");
     });
 
     // Respond to a unsuccessful auth req
     socket.on("unsuccessful authentication", () => {
-
+        // Add more to this,
+        // what should we do other than disconnect on bad auth?
+        // Maybe emit something, idk.
+        socket.disconnect();
     });
 
     socket.on("disconnect", () => {

@@ -26,7 +26,7 @@ export class SessionService {
       withCredentials: true
     }).subscribe(user => {
       console.log(user);
-      this.route.navigate(["home"]);
+      this.route.navigate(["home"], { replaceUrl: true });
     },
     err => {
       console.log(err);

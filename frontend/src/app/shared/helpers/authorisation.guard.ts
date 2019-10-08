@@ -3,13 +3,15 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { SessionService } from "../services/session.service";
 import { map, catchError } from "rxjs/operators";
 import { Observable, of } from "rxjs";
+import { SocketService } from "../services/socket.service";
 
 @Injectable({ providedIn: "root" })
 export class AuthGuard implements CanActivate {
 
     constructor(
         private route: Router,
-        private sessionService: SessionService
+        private sessionService: SessionService,
+        private socketService: SocketService
     ) { }
 
     public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
@@ -19,6 +21,7 @@ export class AuthGuard implements CanActivate {
                     console.log("User session exists");
                     console.log(user);
                     this.sessionService.currentUser = user;
+                    this.socketService.connect();
                     return true;
                 } else {
                     console.log("User session does not exist");

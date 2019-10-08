@@ -20,14 +20,19 @@ export class ChatroomComponent implements OnInit {
 
   ngOnInit() {
     // We can't get here without route auth anyway...
-    this.socketService.connect();
+    // Socket is connected in session service and our logged in guard :).
+
     this.socketService.usersSocket.on("new message", ({ user, message }) => {
       this.currentMessageList.push(user + ": " + message);
     });
 
     this.socketService.usersSocket.on("logged out", (username) => {
       this.currentMessageList.push(username + " has logged out");
-    })
+    });
+
+    this.socketService.usersSocket.on("logged in", (username) => {
+      this.currentMessageList.push(username + " has logged in");
+    });
   }
 
   public sendUserMessage(): void {

@@ -35,6 +35,8 @@ export class SessionService {
     err => {
       console.log(err);
     });
+    this.socketService.connect();
+    this.socketService.usersSocket.emit("user logged in", this.currentUser);
   }
 
   // #LOGOUT
